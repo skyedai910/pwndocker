@@ -85,6 +85,7 @@ COPY --from=skysider/glibc_builder32:2.19 /glibc/2.19/32 /glibc/2.19/32
 
 COPY --from=skysider/glibc_builder64:2.23 /glibc/2.23/64 /glibc/2.23/64
 COPY --from=skysider/glibc_builder32:2.23 /glibc/2.23/32 /glibc/2.23/32
+COPY --from=skysider/glibc_builder32:2.23 /glibc_source/2.23/32 /glibc_source/2.23/32
 
 COPY --from=skysider/glibc_builder64:2.24 /glibc/2.24/64 /glibc/2.24/64
 COPY --from=skysider/glibc_builder32:2.24 /glibc/2.24/32 /glibc/2.24/32
