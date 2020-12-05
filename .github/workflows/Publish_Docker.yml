@@ -36,4 +36,3 @@ jobs:
         
       - name: Push Image
         run: docker push skye231/pwndocker:20.04
-
