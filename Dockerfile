@@ -1,7 +1,9 @@
-FROM ubuntu:18.04
+FROM phusion/baseimage:bionic-1.0.0-amd64
 MAINTAINER skysider <skysider@163.com>
 
-ENV LANG C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV TZ Asia/Shanghai
 
 RUN dpkg --add-architecture i386 && \
     apt-get -y update && \
@@ -12,23 +14,25 @@ RUN dpkg --add-architecture i386 && \
     lib32stdc++6 \
     g++-multilib \
     cmake \
-    python \
-    ipython \
-    python-pip \
-    python3 \
-    python3-pip \
+    vim \
     net-tools \
+    iputils-ping \
     libffi-dev \
     libssl-dev \
-    python-dev \
+    ipython \
+    python \
+    python-pip \
+    ipython3 \
+    python3-dev \
+    python3-pip \
     build-essential \
     ruby \
+    ruby-dev \
     tmux \
     strace \
     ltrace \
     nasm \
     wget \
-    radare2 \
     gdb \
     gdb-multiarch \
     netcat \
@@ -37,61 +41,92 @@ RUN dpkg --add-architecture i386 && \
     patchelf \
     gawk \
     file \
-    sshpass \
-    vim \
-    bison --fix-missing && \
+    python3-distutils \
+    bison \
+    tzdata --fix-missing && \
     rm -rf /var/lib/apt/list/*
+
+RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+    
+RUN wget https://github.com/radareorg/radare2/releases/download/4.4.0/radare2_4.4.0_amd64.deb && \
+    dpkg -i radare2_4.4.0_amd64.deb && rm radare2_4.4.0_amd64.deb
+
+RUN python -m pip install -U pip && \
+    python -m pip install --no-cache-dir \
+    pwntools
 
 RUN python3 -m pip install -U pip && \
     python3 -m pip install --no-cache-dir \
-    -i https://pypi.doubanio.com/simple/  \
-    --trusted-host pypi.doubanio.com \
+    ropgadget \
+    pwntools \
+    z3-solver \
+    smmap2 \
+    apscheduler \
     ropper \
     unicorn \
     keystone-engine \
     capstone \
-    angr
+    angr \
+    pebble \
+    r2pipe
 
-RUN python -m pip install -U pip setuptools && \
-    python -m pip install --no-cache-dir \
-    ropgadget \
-    pwntools \
-    zio \
-    smmap2 \
-    z3-solver \
-    apscheduler \
-    ropper \
-    pycrypto && \
-    python -m pip install --upgrade pwntools
+RUN gem install one_gadget seccomp-tools && rm -rf /var/lib/gems/2.*/cache/*
 
-RUN gem install \
-    one_gadget && \
-    rm -rf /var/lib/gems/2.*/cache/*
-
-RUN git clone https://github.com/pwndbg/pwndbg && \
+RUN git clone --depth 1 https://github.com/pwndbg/pwndbg && \
     cd pwndbg && chmod +x setup.sh && ./setup.sh
 
-RUN git clone https://github.com/scwuaptx/Pwngdb.git /root/Pwngdb && \
+RUN git clone --depth 1 https://github.com/scwuaptx/Pwngdb.git /root/Pwngdb && \
     cd /root/Pwngdb && cat /root/Pwngdb/.gdbinit  >> /root/.gdbinit && \
     sed -i "s?source ~/peda/peda.py?# source ~/peda/peda.py?g" /root/.gdbinit
 
-RUN git clone https://github.com/niklasb/libc-database.git libc-database && \
+RUN git clone --depth 1 https://github.com/niklasb/libc-database.git libc-database && \
     cd libc-database && ./get || echo "/libc-database/" > ~/.libcdb_path
 
 WORKDIR /ctf/work/
 
-COPY linux_server linux_server64 build_glibc.sh /ctf/
+COPY --from=skye231/glibc_builder64:2.19 /glibc/2.19/64 /glibc/2.19/64
+COPY --from=skye231/glibc_builder64:2.19 /glibc_source/2.19/64 /glibc_source/2.19/64
+COPY --from=skye231/glibc_builder32:2.19 /glibc/2.19/32 /glibc/2.19/32
+COPY --from=skye231/glibc_builder32:2.19 /glibc_source/2.19/32 /glibc_source/2.19/32
 
-RUN chmod +x /ctf/linux_server /ctf/linux_server64 /ctf/build_glibc.sh 
+COPY --from=skye231/glibc_builder64:2.23 /glibc/2.23/64 /glibc/2.23/64
+COPY --from=skye231/glibc_builder64:2.23 /glibc_source/2.23/64 /glibc_source/2.23/64
+COPY --from=skye231/glibc_builder32:2.23 /glibc/2.23/32 /glibc/2.23/32
+COPY --from=skye231/glibc_builder32:2.23 /glibc_source/2.23/32 /glibc_source/2.23/32
 
-RUN /ctf/build_glibc.sh 2.19
+COPY --from=skye231/glibc_builder64:2.24 /glibc/2.24/64 /glibc/2.24/64
+COPY --from=skye231/glibc_builder64:2.24 /glibc_source/2.24/64 /glibc_source/2.24/64
+COPY --from=skye231/glibc_builder32:2.24 /glibc/2.24/32 /glibc/2.24/32
+COPY --from=skye231/glibc_builder32:2.24 /glibc_source/2.24/32 /glibc_source/2.24/32
 
-RUN /ctf/build_glibc.sh 2.23
+COPY --from=skye231/glibc_builder64:2.27 /glibc/2.27/64 /glibc/2.27/64
+COPY --from=skye231/glibc_builder64:2.27 /glibc_source/2.27/64 /glibc_source/2.27/64
+COPY --from=skye231/glibc_builder32:2.27 /glibc/2.27/32 /glibc/2.27/32
+COPY --from=skye231/glibc_builder32:2.27 /glibc_source/2.27/32 /glibc_source/2.27/32
 
-RUN /ctf/build_glibc.sh 2.24
+COPY --from=skye231/glibc_builder64:2.28 /glibc/2.28/64 /glibc/2.28/64
+COPY --from=skye231/glibc_builder64:2.28 /glibc_source/2.28/64 /glibc_source/2.28/64
+COPY --from=skye231/glibc_builder32:2.28 /glibc/2.28/32 /glibc/2.28/32
+COPY --from=skye231/glibc_builder32:2.28 /glibc_source/2.28/32 /glibc_source/2.28/32
 
-RUN /ctf/build_glibc.sh 2.28
+COPY --from=skye231/glibc_builder64:2.29 /glibc/2.29/64 /glibc/2.29/64
+COPY --from=skye231/glibc_builder64:2.29 /glibc_source/2.29/64 /glibc_source/2.29/64
+COPY --from=skye231/glibc_builder32:2.29 /glibc/2.29/32 /glibc/2.29/32
+COPY --from=skye231/glibc_builder32:2.29 /glibc_source/2.29/32 /glibc_source/2.29/32
 
-RUN /ctf/build_glibc.sh 2.29
+COPY --from=skye231/glibc_builder64:2.30 /glibc/2.30/64 /glibc/2.30/64
+COPY --from=skye231/glibc_builder64:2.30 /glibc_source/2.30/64 /glibc_source/2.30/64
+COPY --from=skye231/glibc_builder32:2.30 /glibc/2.30/32 /glibc/2.30/32
+COPY --from=skye231/glibc_builder32:2.30 /glibc_source/2.30/32 /glibc_source/2.30/32
 
-ENTRYPOINT ["/bin/bash"]
+COPY --from=skye231/glibc_builder64:2.31 /glibc/2.31/64 /glibc/2.31/64
+COPY --from=skye231/glibc_builder64:2.31 /glibc_source/2.31/64 /glibc_source/2.31/64
+COPY --from=skye231/glibc_builder32:2.31 /glibc/2.31/32 /glibc/2.31/32
+COPY --from=skye231/glibc_builder32:2.31 /glibc_source/2.31/32 /glibc_source/2.31/32
+
+COPY linux_server linux_server64  /ctf/
+
+RUN chmod a+x /ctf/linux_server /ctf/linux_server64
+
+CMD ["/sbin/my_init"]
