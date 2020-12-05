@@ -80,8 +80,8 @@ RUN git clone --depth 1 https://github.com/niklasb/libc-database.git libc-databa
 
 WORKDIR /ctf/work/
 
-#COPY --from=skye231/glibc_builder64:2.19 /glibc/2.19/64 /glibc/2.19/64
-#COPY --from=skye231/glibc_builder64:2.19 /glibc_sources/2.19/64 /glibc_sources/2.19/64
+COPY --from=skye231/glibc_builder64:2.19 /glibc/2.19/64 /glibc/2.19/64
+COPY --from=skye231/glibc_builder64:2.19 /glibc_sources/2.19/64 /glibc_sources/2.19/64
 COPY --from=skye231/glibc_builder32:2.19 /glibc/2.19/32 /glibc/2.19/32
 COPY --from=skye231/glibc_builder32:2.19 /glibc_sources/2.19/32 /glibc_sources/2.19/32
 
