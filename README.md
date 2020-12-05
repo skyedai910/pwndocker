@@ -1,6 +1,6 @@
 Pwndocker
 =========
-A docker environment for pwn in ctf based on **phusion/baseimage:master-amd64**, which is a modified ** ubuntu 20.04 **baseimage for docker
+A docker environment for pwn in ctf based on **phusion/baseimage:master-amd64**, which is a modified **ubuntu 20.04**baseimage for docker
 
 ### Usage
 
@@ -76,38 +76,4 @@ libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f0040616000)
 root@pwn:/ctf/work# /glibc/2.28/64/ld-2.28.so /bin/ls
 /bin/ls: error while loading shared libraries: libselinux.so.1: cannot open shared object file: No such file or directory
 ```
-You can copy /lib/x86_64-linux-gnu/libselinux.so.1 and /lib/x86_64-linux-gnu/libpcre2-8.so.0 to /glibc/2.28/64/lib/, and sometimes it fails because the built-in libselinux.so.1 requires higher version libc:
-
-```
-root@pwn:/ctf/work# /glibc/2.28/64/ld-2.28.so /bin/ls
-/bin/ls: /glibc/2.28/64/lib/libc.so.6: version `GLIBC_2.30' not found (required by /glibc/2.28/64/lib/libselinux.so.1)
-```
-
-it can be solved by copying libselinux.so.1 from ubuntu 18.04 which glibc version is 2.27 to /glibc/2.28/64/lib:
-```
-docker run -itd --name u18 ubuntu:18.04 /bin/bash
-docker cp -L u18:/lib/x86_64-linux-gnu/libselinux.so.1 .
-docker cp -L u18:/lib/x86_64-linux-gnu/libpcre2-8.so.0 .
-docker cp libselinux.so.1 pwn:/glibc/2.28/64/lib/
-docker cp libpcre2-8.so.0 pwn:/glibc/2.28/64/lib/
-```
-
-And now it succeeds:
-
-```
-root@pwn:/ctf/work# /glibc/2.28/64/ld-2.28.so /bin/ls -l /
-```
-
-### ChangeLog
-#### 2020-09-06
-update base image to 20.04(glibc 2.31) and add glibc 2.27
-
-#### 2020-05-22
-update radare2 to version 4.4.0 and add r2pipe python binding
-
-#### 2020-04-11
-add libc 2.30 and 2.31
-
-#### 2020-02-19
-
-python packages switched to python3 version, remove roputils.py
+You can copy /lib/x86_64-linux-gnu/libselinux.so.1 and /lib/x86_64-linux-gnu/libpcre2-8.so.0 to /glibc/2.28/64/lib/, and sometimes 
