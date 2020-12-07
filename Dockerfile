@@ -78,8 +78,7 @@ RUN git clone --depth 1 https://github.com/scwuaptx/Pwngdb.git /root/Pwngdb && \
 RUN git clone --depth 1 https://github.com/niklasb/libc-database.git libc-database && \
     cd libc-database && ./get ubuntu debian || echo "/libc-database/" > ~/.libcdb_path
 
-RUN git clone --depth 1 https://github.com/matrix1001/glibc-all-in-one.git && \
-    cd glibc-all-in-one && ./update_list 
+RUN git clone --depth 1 https://github.com/matrix1001/glibc-all-in-one.git
 
 WORKDIR /ctf/work/
 
