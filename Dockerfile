@@ -78,49 +78,47 @@ RUN git clone --depth 1 https://github.com/scwuaptx/Pwngdb.git /root/Pwngdb && \
 RUN git clone --depth 1 https://github.com/niklasb/libc-database.git libc-database && \
     cd libc-database && ./get ubuntu debian || echo "/libc-database/" > ~/.libcdb_path
 
-RUN git clone --depth 1 https://github.com/matrix1001/glibc-all-in-one.git
-
 WORKDIR /ctf/work/
 
-#COPY --from=skye231/glibc_builder64:2.19 /glibc/2.19/64 /glibc/2.19/64
-#COPY --from=skye231/glibc_builder64:2.19 /glibc_sources/2.19/64 /glibc_sources/2.19/64
-#COPY --from=skye231/glibc_builder32:2.19 /glibc/2.19/32 /glibc/2.19/32
-#COPY --from=skye231/glibc_builder32:2.19 /glibc_sources/2.19/32 /glibc_sources/2.19/32
+COPY --from=skye231/glibc_builder64:2.19 /glibc/2.19/64 /glibc/2.19/64
+COPY --from=skye231/glibc_builder64:2.19 /glibc_sources/2.19/64 /glibc_sources/2.19/64
+COPY --from=skye231/glibc_builder32:2.19 /glibc/2.19/32 /glibc/2.19/32
+COPY --from=skye231/glibc_builder32:2.19 /glibc_sources/2.19/32 /glibc_sources/2.19/32
 
-#COPY --from=skye231/glibc_builder64:2.23 /glibc/2.23/64 /glibc/2.23/64
-#COPY --from=skye231/glibc_builder64:2.23 /glibc_sources/2.23/64 /glibc_sources/2.23/64
-#COPY --from=skye231/glibc_builder32:2.23 /glibc/2.23/32 /glibc/2.23/32
-#COPY --from=skye231/glibc_builder32:2.23 /glibc_sources/2.23/32 /glibc_sources/2.23/32
+COPY --from=skye231/glibc_builder64:2.23 /glibc/2.23/64 /glibc/2.23/64
+COPY --from=skye231/glibc_builder64:2.23 /glibc_sources/2.23/64 /glibc_sources/2.23/64
+COPY --from=skye231/glibc_builder32:2.23 /glibc/2.23/32 /glibc/2.23/32
+COPY --from=skye231/glibc_builder32:2.23 /glibc_sources/2.23/32 /glibc_sources/2.23/32
 
-#COPY --from=skye231/glibc_builder64:2.24 /glibc/2.24/64 /glibc/2.24/64
-#COPY --from=skye231/glibc_builder64:2.24 /glibc_sources/2.24/64 /glibc_sources/2.24/64
-#COPY --from=skye231/glibc_builder32:2.24 /glibc/2.24/32 /glibc/2.24/32
-#COPY --from=skye231/glibc_builder32:2.24 /glibc_sources/2.24/32 /glibc_sources/2.24/32
+COPY --from=skye231/glibc_builder64:2.24 /glibc/2.24/64 /glibc/2.24/64
+COPY --from=skye231/glibc_builder64:2.24 /glibc_sources/2.24/64 /glibc_sources/2.24/64
+COPY --from=skye231/glibc_builder32:2.24 /glibc/2.24/32 /glibc/2.24/32
+COPY --from=skye231/glibc_builder32:2.24 /glibc_sources/2.24/32 /glibc_sources/2.24/32
 
-#COPY --from=skye231/glibc_builder64:2.27 /glibc/2.27/64 /glibc/2.27/64
-#COPY --from=skye231/glibc_builder64:2.27 /glibc_sources/2.27/64 /glibc_sources/2.27/64
-#COPY --from=skye231/glibc_builder32:2.27 /glibc/2.27/32 /glibc/2.27/32
-#COPY --from=skye231/glibc_builder32:2.27 /glibc_sources/2.27/32 /glibc_sources/2.27/32
+COPY --from=skye231/glibc_builder64:2.27 /glibc/2.27/64 /glibc/2.27/64
+COPY --from=skye231/glibc_builder64:2.27 /glibc_sources/2.27/64 /glibc_sources/2.27/64
+COPY --from=skye231/glibc_builder32:2.27 /glibc/2.27/32 /glibc/2.27/32
+COPY --from=skye231/glibc_builder32:2.27 /glibc_sources/2.27/32 /glibc_sources/2.27/32
 
-#COPY --from=skye231/glibc_builder64:2.28 /glibc/2.28/64 /glibc/2.28/64
-#COPY --from=skye231/glibc_builder64:2.28 /glibc_sources/2.28/64 /glibc_sources/2.28/64
-#COPY --from=skye231/glibc_builder32:2.28 /glibc/2.28/32 /glibc/2.28/32
-#COPY --from=skye231/glibc_builder32:2.28 /glibc_sources/2.28/32 /glibc_sources/2.28/32
+COPY --from=skye231/glibc_builder64:2.28 /glibc/2.28/64 /glibc/2.28/64
+COPY --from=skye231/glibc_builder64:2.28 /glibc_sources/2.28/64 /glibc_sources/2.28/64
+COPY --from=skye231/glibc_builder32:2.28 /glibc/2.28/32 /glibc/2.28/32
+COPY --from=skye231/glibc_builder32:2.28 /glibc_sources/2.28/32 /glibc_sources/2.28/32
 
-#COPY --from=skye231/glibc_builder64:2.29 /glibc/2.29/64 /glibc/2.29/64
-#COPY --from=skye231/glibc_builder64:2.29 /glibc_sources/2.29/64 /glibc_sources/2.29/64
-#COPY --from=skye231/glibc_builder32:2.29 /glibc/2.29/32 /glibc/2.29/32
-#COPY --from=skye231/glibc_builder32:2.29 /glibc_sources/2.29/32 /glibc_sources/2.29/32
+COPY --from=skye231/glibc_builder64:2.29 /glibc/2.29/64 /glibc/2.29/64
+COPY --from=skye231/glibc_builder64:2.29 /glibc_sources/2.29/64 /glibc_sources/2.29/64
+COPY --from=skye231/glibc_builder32:2.29 /glibc/2.29/32 /glibc/2.29/32
+COPY --from=skye231/glibc_builder32:2.29 /glibc_sources/2.29/32 /glibc_sources/2.29/32
 
-#COPY --from=skye231/glibc_builder64:2.30 /glibc/2.30/64 /glibc/2.30/64
-#COPY --from=skye231/glibc_builder64:2.30 /glibc_sources/2.30/64 /glibc_sources/2.30/64
-#COPY --from=skye231/glibc_builder32:2.30 /glibc/2.30/32 /glibc/2.30/32
-#COPY --from=skye231/glibc_builder32:2.30 /glibc_sources/2.30/32 /glibc_sources/2.30/32
+COPY --from=skye231/glibc_builder64:2.30 /glibc/2.30/64 /glibc/2.30/64
+COPY --from=skye231/glibc_builder64:2.30 /glibc_sources/2.30/64 /glibc_sources/2.30/64
+COPY --from=skye231/glibc_builder32:2.30 /glibc/2.30/32 /glibc/2.30/32
+COPY --from=skye231/glibc_builder32:2.30 /glibc_sources/2.30/32 /glibc_sources/2.30/32
 
-#COPY --from=skye231/glibc_builder64:2.31 /glibc/2.31/64 /glibc/2.31/64
-#COPY --from=skye231/glibc_builder64:2.31 /glibc_sources/2.31/64 /glibc_sources/2.31/64
-#COPY --from=skye231/glibc_builder32:2.31 /glibc/2.31/32 /glibc/2.31/32
-#COPY --from=skye231/glibc_builder32:2.31 /glibc_sources/2.31/32 /glibc_sources/2.31/32
+COPY --from=skye231/glibc_builder64:2.31 /glibc/2.31/64 /glibc/2.31/64
+COPY --from=skye231/glibc_builder64:2.31 /glibc_sources/2.31/64 /glibc_sources/2.31/64
+COPY --from=skye231/glibc_builder32:2.31 /glibc/2.31/32 /glibc/2.31/32
+COPY --from=skye231/glibc_builder32:2.31 /glibc_sources/2.31/32 /glibc_sources/2.31/32
 
 COPY linux_server linux_server64  /ctf/
 
