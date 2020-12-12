@@ -31,14 +31,14 @@ jobs:
           password: ${{ secrets.PASSWORD }}
         run: docker login --username=${username} --password=${password}
 
-      - name: Build Image 20.04
-        run: docker build -t skye231/pwndocker:20.04 .
+      #- name: Build Image 20.04
+      #  run: docker build -t skye231/pwndocker:20.04 .
 
       - name: Build Image 18.04
         run: docker build -t skye231/pwndocker:18.04 -f Dockerfile_18.04 .
         
-      - name: Push Image 20.04
-        run: docker push skye231/pwndocker:20.04
+      #- name: Push Image 20.04
+      #  run: docker push skye231/pwndocker:20.04
 
       - name: Push Image 18.04
         run: docker push skye231/pwndocker:18.04  
